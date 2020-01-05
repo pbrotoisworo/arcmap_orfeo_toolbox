@@ -1,0 +1,4 @@
+tests/
+.idea/
+logs/
+OTBDIR.ini

@@ -68,6 +68,8 @@ command_list.append(input_classifier)
 # Generate command for input imagery
 otb_input_images = '-io.il '
 for item in input_images.split(';'):
+    item = item.rstrip("'")
+    item = item.lstrip("'")
     otb_input_images += '"' + item + '"' + ' '
 otb_input_images = otb_input_images.rstrip(' ')
 command_list.append(otb_input_images)
@@ -75,6 +77,8 @@ command_list.append(otb_input_images)
 # Generate command for input shapefiles
 otb_input_train_shp = '-io.vd '
 for item in input_train_shp.split(';'):
+    item = item.rstrip("'")
+    item = item.lstrip("'")
     otb_input_train_shp += '"' + item + '"' + ' '
 otb_input_train_shp = otb_input_train_shp.rstrip(' ')
 command_list.append(otb_input_train_shp)
