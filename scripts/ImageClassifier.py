@@ -3,7 +3,7 @@ import os
 import shutil
 import subprocess
 from datetime import datetime
-from generate_command import generate_command
+from cl_tools import generate_command
 
 arcpy.AddMessage('\nImage Classification')
 arcpy.AddMessage('Orfeo Toolbox\n')

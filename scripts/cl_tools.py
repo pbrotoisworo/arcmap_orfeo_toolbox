@@ -2,6 +2,48 @@
 # Generate command function used to generate command line functions
 ###
 
+import arcpy
+import shutil
+import os
+import subprocess
+
+def execute_command(command, arguments, workspace, otb_dir):
+    """Combines and then executes the OTB command
+    The filenames do not change."""
+    # Generate full command for OTB
+    otb_write_output = command
+    for item in arguments:
+        otb_write_output += item + ' '
+    otb_write_output = otb_write_output.rstrip(' ')
+
+    arcpy.AddMessage('OTB Command:\n\n')
+    arcpy.AddMessage(otb_write_output)
+    arcpy.AddMessage('\n\nCalling OTB software...\n\n')
+    # Template file
+    dev_ini_file = os.path.join(workspace, 'otb_devenv.ini')
+
+    # batch file containing commands
+    command_file = os.path.join(otb_dir, 'otb_command.bat')
+
+    # Modified start_devenv to launch our modified script
+    out_batch_file = os.path.join(otb_dir, 'arcmap_orfeo_process.bat')
+    shutil.copy(dev_ini_file, out_batch_file)
+
+    with open(out_batch_file, 'a') as f:
+        f.write('\n\n:: @cmd')
+        f.write('\nstart cmd.exe /C {}'.format(command_file))
+
+    with open(command_file, 'w') as f:
+        f.write('@echo on\n')
+        f.write(otb_write_output)
+        f.write('\n@echo off')
+        f.write('\nPAUSE')
+
+    subprocess.call([out_batch_file])
+    # os.remove(out_batch_file)
+    # os.remove(command_file)
+
+
 def generate_command(otb_command=None, quotes=None, input_variable=None, multi_list=False):
     """Generate OTB command.
     Quotes argument is if the command requires quotes wrapped around it

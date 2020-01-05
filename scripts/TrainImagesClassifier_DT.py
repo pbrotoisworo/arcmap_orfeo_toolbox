@@ -3,7 +3,7 @@ import os
 import shutil
 import subprocess
 from datetime import datetime
-from generate_command import generate_command
+from cl_tools import generate_command, execute_command
 
 arcpy.AddMessage('\nTrain Images Classifier (Decision Tree)')
 arcpy.AddMessage('Orfeo Toolbox\n')
@@ -20,7 +20,7 @@ ts = ts.strftime("%Y-%m-%d %H:%M:%S")
 ts_file_append = ts.replace('-', '')
 ts_file_append = ts_file_append.replace(':', '')
 ts_file_append = ts_file_append.replace(' ', '_')
-log_file = os.path.join(log_folder, 'IMAGECLASSIFICATION_' + ts_file_append + '.log')
+log_file = os.path.join(log_folder, 'TRAINCLASSDT' + ts_file_append + '.log')
 
 # Load OTB Dir
 with open(os.path.join(workspace, 'OTBDIR.ini'), 'r') as f:
@@ -137,42 +137,4 @@ otb_out_model = generate_command('-io.out ', True, out_model, False)
 command_list.append(otb_out_model)
 
 # Generate full command for OTB
-otb_write_output = 'otbcli_TrainImagesClassifier '
-for item in command_list:
-    otb_write_output += item + ' '
-otb_write_output = otb_write_output.rstrip(' ')
-#otb_write_output += r' > {}'.format(os.path.join(log_folder, log_file))
-
-arcpy.AddMessage('OTB Command:\n\n')
-arcpy.AddMessage(otb_write_output)
-arcpy.AddMessage('\n\nCalling OTB software...\n\n')
-# Template file
-dev_ini_file = os.path.join(workspace, 'otb_devenv.ini')
-
-# batch file containing commands
-command_file = os.path.join(otb_dir, 'otb_command.bat')
-
-# Modified start_devenv to launch our modified script
-out_batch_file = os.path.join(otb_dir, 'arcmap_orfeo_process.bat')
-
-shutil.copy(dev_ini_file, out_batch_file)
-
-log_file = os.path.join(log_folder, log_file)
-
-with open(out_batch_file, 'a') as f:
-    f.write('\n\n:: @cmd')
-    f.write('\nstart cmd.exe /C {}'.format(command_file))
-
-with open(command_file, 'w') as f:
-    # f.write('start cmd.exe /K tail -f {}'.format(os.path.join(log_folder, log_file)))
-    f.write('@echo on\n')
-    f.write(otb_write_output)
-    f.write('\n@echo off')
-    f.write('\nPAUSE')
-    # f.write('\n@echo on')
-    # f.write('\ntail {}'.format(os.path.join(log_folder, log_file)))
-    #f.write('\nPAUSE')
-
-subprocess.call([out_batch_file])
-# os.remove(out_batch_file)
-# os.remove(command_file)
+execute_command('otbcli_TrainImagesClassifier ', command_list, workspace, otb_dir)
