@@ -214,7 +214,7 @@ dev_ini_file = os.path.join(workspace, 'otb_devenv.ini')
 command_file = os.path.join(otb_dir, 'otb_command.bat')
 
 # Modified start_devenv to launch our modified script
-out_batch_file = os.path.join(otb_dir, 'process.bat')
+out_batch_file = os.path.join(otb_dir, 'arcmap_orfeo_process.bat')
 
 shutil.copy(dev_ini_file, out_batch_file)
 

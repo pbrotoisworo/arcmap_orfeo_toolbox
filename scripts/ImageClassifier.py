@@ -3,6 +3,7 @@ import os
 import shutil
 import subprocess
 from datetime import datetime
+from generate_command import generate_command
 
 arcpy.AddMessage('\nImage Classification')
 arcpy.AddMessage('Orfeo Toolbox\n')
@@ -39,17 +40,25 @@ input_no_data_label = arcpy.GetParameterAsText(5)
 input_output_image = arcpy.GetParameterAsText(6)
 input_output_conf = arcpy.GetParameterAsText(7)
 
-def generate_command(otb_command=None, quotes=None, input_variable=None):
 
-    if quotes == True:
-        if not len(str(input_variable)) == 0:
-            output_command = otb_command + input_variable
-
-    elif quotes == False:
-        if not len(str(input_variable)) == 0:
-            output_command = otb_command + '"' + input_variable + '"'
-
-    return output_command
+# def generate_command(otb_command=None, quotes=None, input_variable=None):
+#     """Generate OTB command.
+#     Quotes argument is if the command requires quotes wrapped around it
+#     which are useful for system paths"""
+#
+#     if not quotes:
+#         if len(str(input_variable)) != 0:
+#             output_command = otb_command + input_variable
+#         else:
+#             return ''
+#
+#     elif quotes:
+#         if len(str(input_variable)) != 0:
+#             output_command = otb_command + '"' + input_variable + '"'
+#         else:
+#             return ''
+#
+#     return output_command
 
 # Generate OTB commands
 command_list = []
@@ -94,7 +103,7 @@ dev_ini_file = os.path.join(workspace, 'otb_devenv.ini')
 command_file = os.path.join(otb_dir, 'otb_command.bat')
 
 # Modified start_devenv to launch our modified script
-out_batch_file = os.path.join(otb_dir, 'process.bat')
+out_batch_file = os.path.join(otb_dir, 'arcmap_orfeo_process.bat')
 shutil.copy(dev_ini_file, out_batch_file)
 
 with open(out_batch_file, 'a') as f:
@@ -108,5 +117,5 @@ with open(command_file, 'w') as f:
     f.write('\nPAUSE')
 
 subprocess.call([out_batch_file])
-os.remove(out_batch_file)
-os.remove(command_file)
+# os.remove(out_batch_file)
+# os.remove(command_file)
