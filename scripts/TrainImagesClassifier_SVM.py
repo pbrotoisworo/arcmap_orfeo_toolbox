@@ -5,7 +5,7 @@ import subprocess
 from datetime import datetime
 from cl_tools import generate_command, execute_command
 
-arcpy.AddMessage('\nTrain Images Classifier (Decision Tree)')
+arcpy.AddMessage('\nTrain Images Classifier (libsvm)')
 arcpy.AddMessage('Orfeo Toolbox\n')
 
 # Detect workspace, set up initial parameters
@@ -113,6 +113,19 @@ command_list.append(otb_input_parameter_optimization)
 # Generate command for probability estimation
 otb_input_probability_estimation = generate_command('-classifier.libsvm.prob ', False, input_probability_estimation, False)
 command_list.append(otb_input_probability_estimation)
+
+# Generate command for user defined seed
+otb_input_user_seed = generate_command('-rand ', False, input_user_seed, False)
+command_list.append(otb_input_user_seed)
+
+# Generate command for output confusion matrix
+if len(out_conf_matrix) > 0:
+    otb_out_conf_matrix = generate_command('-io.confmatout ', True, out_conf_matrix, False)
+    command_list.append(otb_out_conf_matrix)
+
+# Generate command for output model file
+otb_out_model = generate_command('-io.out ', True, out_model, False)
+command_list.append(otb_out_model)
 
 # Generate full command for OTB
 execute_command('otbcli_TrainImagesClassifier ', command_list, workspace, otb_dir)

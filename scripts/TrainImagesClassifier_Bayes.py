@@ -20,7 +20,7 @@ ts = ts.strftime("%Y-%m-%d %H:%M:%S")
 ts_file_append = ts.replace('-', '')
 ts_file_append = ts_file_append.replace(':', '')
 ts_file_append = ts_file_append.replace(' ', '_')
-log_file = os.path.join(log_folder, 'TRAINCLASSDT' + ts_file_append + '.log')
+log_file = os.path.join(log_folder, 'TRAINCLASSBAYES' + ts_file_append + '.log')
 
 # Load OTB Dir
 with open(os.path.join(workspace, 'OTBDIR.ini'), 'r') as f:
@@ -32,7 +32,7 @@ if not os.path.exists(otb_dir):
 
 # Input vars
 input_images = arcpy.GetParameterAsText(0)
-input_shapefiles = arcpy.GetParameterAsText(1)
+input_train_shp = arcpy.GetParameterAsText(1)
 input_xml_stats = arcpy.GetParameterAsText(2)
 input_default_elev = arcpy.GetParameterAsText(3)
 input_max_class_train_sample = arcpy.GetParameterAsText(4)
@@ -40,31 +40,19 @@ input_max_class_valid_sample = arcpy.GetParameterAsText(5)
 input_bound_sample_num_min = arcpy.GetParameterAsText(6)
 input_train_validation_ratio = arcpy.GetParameterAsText(7)
 input_name_discrimination_field = arcpy.GetParameterAsText(8)
-input_train_method = 'dt'
-input_max_depth_tree = arcpy.GetParameterAsText(9)
-input_min_samples_node = arcpy.GetParameterAsText(10)
-input_termination_criteria = arcpy.GetParameterAsText(11)
-input_cluster_possible_values_k = arcpy.GetParameterAsText(12)
-input_k_fold_validations = arcpy.GetParameterAsText(13)
-input_set_use1serule = arcpy.GetParameterAsText(14)
-input_set_truncate_pruned_tree_to_false = arcpy.GetParameterAsText(15)
-input_user_seed = arcpy.GetParameterAsText(16)
-out_conf_matrix = arcpy.GetParameterAsText(17)
-out_model = arcpy.GetParameterAsText(18)
+input_user_seed = arcpy.GetParameterAsText(9)
+out_conf_matrix = arcpy.GetParameterAsText(10)
+out_model = arcpy.GetParameterAsText(11)
 
 # Generate OTB commands
 command_list = []
 
 # State which classifier is being used
-input_classifier = '-classifier dt'
+input_classifier = '-classifier bayes'
 command_list.append(input_classifier)
 
-# Generate command for input imagery
-otb_input_images = generate_command('-io.il ', True, input_images, True)
-command_list.append(otb_input_images)
-
 # Generate command for input shapefiles
-otb_input_train_shp = generate_command('-io.vd ', True, input_shapefiles, True)
+otb_input_train_shp = generate_command('-io.vd ', True, input_train_shp, True)
 command_list.append(otb_input_train_shp)
 
 # Generate command for XML Stats
@@ -95,34 +83,6 @@ command_list.append(otb_input_train_validation_ratio)
 # Generate command for discrimination field
 otb_input_name_discrimination_field = generate_command('-sample.vfn ', False, input_name_discrimination_field, False)
 command_list.append(otb_input_name_discrimination_field)
-
-# Generate command for maximum depth of tree
-otb_input_max_depth_tree = generate_command('-classifier.dt.max ', False, input_max_depth_tree, False)
-command_list.append(otb_input_max_depth_tree)
-
-# Generate command for minimum number of samples in each node
-otb_input_min_samples_node = generate_command('-classifier.dt.min ', False, input_min_samples_node, False)
-command_list.append(otb_input_min_samples_node)
-
-# Generate command for termination criteria for regression tree
-otb_input_termination_criteria = generate_command('-classifier.dt.ra ', False, input_termination_criteria, False)
-command_list.append(otb_input_termination_criteria)
-
-# Generate command for cluster possible values of a categorical variable into K
-otb_input_cluster_possible_values_k = generate_command('-classifier.dt.cat ', False, input_cluster_possible_values_k, False)
-command_list.append(otb_input_cluster_possible_values_k)
-
-# Generate command for K fold cross validation
-otb_input_k_fold_validations = generate_command('-classifier.dt.f ', False, input_k_fold_validations, False)
-command_list.append(otb_input_k_fold_validations)
-
-# Generate command for set use1serule to false
-otb_input_set_use1serule = generate_command('-classifier.dt.r ', False, input_set_use1serule, False)
-command_list.append(otb_input_set_use1serule)
-
-# Generate command for truncate pruned tree to false
-otb_input_set_truncate_pruned_tree_to_false = generate_command('-classifier.dt.t ', False, input_set_truncate_pruned_tree_to_false, False)
-command_list.append(otb_input_set_truncate_pruned_tree_to_false)
 
 # Generate command for user defined seed
 otb_input_user_seed = generate_command('-rand ', False, input_user_seed, False)
