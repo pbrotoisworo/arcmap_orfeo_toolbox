@@ -49,8 +49,9 @@ input_k_fold_validations = arcpy.GetParameterAsText(13)
 input_set_use1serule = arcpy.GetParameterAsText(14)
 input_set_truncate_pruned_tree_to_false = arcpy.GetParameterAsText(15)
 input_user_seed = arcpy.GetParameterAsText(16)
-out_conf_matrix = arcpy.GetParameterAsText(17)
-out_model = arcpy.GetParameterAsText(18)
+input_ram = arcpy.GetParameterAsText(17)
+out_conf_matrix = arcpy.GetParameterAsText(18)
+out_model = arcpy.GetParameterAsText(19)
 
 # Generate OTB commands
 command_list = []
@@ -127,6 +128,10 @@ command_list.append(otb_input_set_truncate_pruned_tree_to_false)
 # Generate command for user defined seed
 otb_input_user_seed = generate_command('-rand ', False, input_user_seed, False)
 command_list.append(otb_input_user_seed)
+
+# Generate command for available RAM
+otb_input_ram = generate_command('-ram ', False, input_ram, False)
+command_list.append(otb_input_ram)
 
 # Generate command for output confusion matrix
 if len(out_conf_matrix) > 0:

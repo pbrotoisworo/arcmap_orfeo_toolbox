@@ -56,8 +56,9 @@ input_termination_criteria = arcpy.GetParameterAsText(18)
 input_epsilon_termination = arcpy.GetParameterAsText(19)
 input_iter_termination = arcpy.GetParameter(20)
 input_user_seed = arcpy.GetParameterAsText(21)
-out_conf_matrix = arcpy.GetParameterAsText(22)
-out_model = arcpy.GetParameterAsText(23)
+input_ram = arcpy.GetParameterAsText(22)
+out_conf_matrix = arcpy.GetParameterAsText(23)
+out_model = arcpy.GetParameterAsText(24)
 
 # Generate OTB commands
 command_list = []
@@ -189,6 +190,10 @@ if not len(str(input_iter_termination)) == 0:
 if not len(str(input_user_seed)) == 0:
     otb_input_user_seed = '-rand ' + input_user_seed
     command_list.append(otb_input_user_seed)
+
+if not len(str(input_ram)) == 0:
+    otb_input_ram = '-ram ' + input_ram
+    command_list.append(otb_input_ram)
 
 if not len(str(out_conf_matrix)) == 0:
     otb_out_conf_matrix = '-io.confmatout ' + out_conf_matrix

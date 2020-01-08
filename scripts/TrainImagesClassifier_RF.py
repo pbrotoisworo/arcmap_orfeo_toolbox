@@ -20,7 +20,7 @@ ts = ts.strftime("%Y-%m-%d %H:%M:%S")
 ts_file_append = ts.replace('-', '')
 ts_file_append = ts_file_append.replace(':', '')
 ts_file_append = ts_file_append.replace(' ', '_')
-log_file = os.path.join(log_folder, 'TRAINCLASSBAYES' + ts_file_append + '.log')
+log_file = os.path.join(log_folder, 'TRAINCLASSRF' + ts_file_append + '.log')
 
 # Load OTB Dir
 with open(os.path.join(workspace, 'OTBDIR.ini'), 'r') as f:
@@ -40,16 +40,23 @@ input_max_class_valid_sample = arcpy.GetParameterAsText(5)
 input_bound_sample_num_min = arcpy.GetParameterAsText(6)
 input_train_validation_ratio = arcpy.GetParameterAsText(7)
 input_name_discrimination_field = arcpy.GetParameterAsText(8)
-input_user_seed = arcpy.GetParameterAsText(9)
-input_ram = arcpy.GetParameterAsText(10)
-out_conf_matrix = arcpy.GetParameterAsText(11)
-out_model = arcpy.GetParameterAsText(12)
+input_maximum_depth_tree = arcpy.GetParameterAsText(9)
+input_minimum_number_each_node = arcpy.GetParameterAsText(10)
+input_termination_criteria = arcpy.GetParameterAsText(11)
+input_cluster_categorical_value = arcpy.GetParameterAsText(12)
+input_size_randomly_selected_features_node = arcpy.GetParameterAsText(13)
+input_maximum_number_trees = arcpy.GetParameterAsText(14)
+input_oob_error = arcpy.GetParameterAsText(15)
+input_user_seed = arcpy.GetParameterAsText(16)
+input_ram = arcpy.GetParameterAsText(17)
+out_conf_matrix = arcpy.GetParameterAsText(18)
+out_model = arcpy.GetParameterAsText(19)
 
 # Generate OTB commands
 command_list = []
 
 # State which classifier is being used
-input_classifier = '-classifier bayes'
+input_classifier = '-classifier rf'
 command_list.append(input_classifier)
 
 # Generate command for input imagery
@@ -88,6 +95,34 @@ command_list.append(otb_input_train_validation_ratio)
 # Generate command for discrimination field
 otb_input_name_discrimination_field = generate_command('-sample.vfn ', False, input_name_discrimination_field, False)
 command_list.append(otb_input_name_discrimination_field)
+
+# Generate command for maximum depth of tree
+otb_input_maximum_depth_tree = generate_command('-classifier.rf.max ', False, input_maximum_depth_tree, False)
+command_list.append(otb_input_maximum_depth_tree)
+
+# Generate command for minimum number of samples in each node
+otb_input_minimum_number_each_node = generate_command('-classifier.rf.min ', False, input_minimum_number_each_node, False)
+command_list.append(otb_input_minimum_number_each_node)
+
+# Generate command for termination criteria of regression tree
+otb_input_termination_criteria = generate_command('-classifier.rf.ra ', False, input_termination_criteria, False)
+command_list.append(otb_input_termination_criteria)
+
+# Generate command for cluster possible values of a categorical variable K
+otb_input_cluster_categorical_value = generate_command('-classifier.rf.cat ', False, input_cluster_categorical_value, False)
+command_list.append(otb_input_cluster_categorical_value)
+
+# Generate command for size of randomly selected subset of features at each tree node
+otb_input_size_randomly_selected_features_node = generate_command('classifier.rf.var ', False, input_size_randomly_selected_features_node, False)
+command_list.append(otb_input_size_randomly_selected_features_node)
+
+# Generate command for maximum number of trees in forest
+otb_input_maximum_number_trees = generate_command('-classifier.rf.nbtrees ', False, input_maximum_number_trees, False)
+command_list.append(otb_input_maximum_number_trees)
+
+# Generate command for sufficient accuracy (OOB Error)
+otb_input_oob_error = generate_command('-classifier.rf.acc ', False, input_oob_error, False)
+command_list.append(otb_input_oob_error)
 
 # Generate command for user defined seed
 otb_input_user_seed = generate_command('-rand ', False, input_user_seed, False)
