@@ -11,7 +11,6 @@ arcpy.AddMessage('Orfeo Toolbox\n')
 # Detect workspace, set up initial parameters
 workspace = os.path.dirname(os.path.abspath(__file__))
 log_folder = os.path.join(os.path.dirname(workspace), 'logs')
-scratch_folder = os.path.join(workspace, 'scratch')
 arcpy.env.overwriteOutput = True
 
 # Set logging parameters

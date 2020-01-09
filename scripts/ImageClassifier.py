@@ -3,7 +3,7 @@ import os
 import shutil
 import subprocess
 from datetime import datetime
-from cl_tools import generate_command
+from cl_tools import generate_command, execute_command
 
 arcpy.AddMessage('\nImage Classification')
 arcpy.AddMessage('Orfeo Toolbox\n')
@@ -40,26 +40,6 @@ input_no_data_label = arcpy.GetParameterAsText(5)
 input_output_image = arcpy.GetParameterAsText(6)
 input_output_conf = arcpy.GetParameterAsText(7)
 
-
-# def generate_command(otb_command=None, quotes=None, input_variable=None):
-#     """Generate OTB command.
-#     Quotes argument is if the command requires quotes wrapped around it
-#     which are useful for system paths"""
-#
-#     if not quotes:
-#         if len(str(input_variable)) != 0:
-#             output_command = otb_command + input_variable
-#         else:
-#             return ''
-#
-#     elif quotes:
-#         if len(str(input_variable)) != 0:
-#             output_command = otb_command + '"' + input_variable + '"'
-#         else:
-#             return ''
-#
-#     return output_command
-
 # Generate OTB commands
 command_list = []
 
@@ -88,34 +68,4 @@ otb_input_output_conf = generate_command('-confmap ', True, input_output_conf)
 command_list.append(otb_input_output_conf)
 
 # Generate full command for OTB
-otb_write_output = 'otbcli_ImageClassifier '
-for item in command_list:
-    otb_write_output += item + ' '
-otb_write_output = otb_write_output.rstrip(' ')
-
-arcpy.AddMessage('OTB Command:\n\n')
-arcpy.AddMessage(otb_write_output)
-arcpy.AddMessage('\n\nCalling OTB software...\n\n')
-# Template file
-dev_ini_file = os.path.join(workspace, 'otb_devenv.ini')
-
-# batch file containing commands
-command_file = os.path.join(otb_dir, 'otb_command.bat')
-
-# Modified start_devenv to launch our modified script
-out_batch_file = os.path.join(otb_dir, 'arcmap_orfeo_process.bat')
-shutil.copy(dev_ini_file, out_batch_file)
-
-with open(out_batch_file, 'a') as f:
-    f.write('\n\n:: @cmd')
-    f.write('\nstart cmd.exe /C {}'.format(command_file))
-
-with open(command_file, 'w') as f:
-    f.write('@echo on\n')
-    f.write(otb_write_output)
-    f.write('\n@echo off')
-    f.write('\nPAUSE')
-
-subprocess.call([out_batch_file])
-# os.remove(out_batch_file)
-# os.remove(command_file)
+execute_command('otbcli_ImageClassifier ', command_list, workspace, otb_dir)

@@ -16,9 +16,10 @@ def execute_command(command, arguments, workspace, otb_dir):
         otb_write_output += item + ' '
     otb_write_output = otb_write_output.rstrip(' ')
 
-    arcpy.AddMessage('OTB Command:\n\n')
+    arcpy.AddMessage('\nOTB Command:\n')
     arcpy.AddMessage(otb_write_output)
-    arcpy.AddMessage('\n\nCalling OTB software...\n\n')
+    arcpy.AddMessage('\nCalling OTB software...\n')
+
     # Template file
     dev_ini_file = os.path.join(workspace, 'otb_devenv.ini')
 
