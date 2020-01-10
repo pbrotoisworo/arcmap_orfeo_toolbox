@@ -133,4 +133,23 @@ otb_out_model = generate_command('-io.out ', True, out_model, False)
 command_list.append(otb_out_model)
 
 # Generate full command for OTB
-execute_command('otbcli_TrainImagesClassifier ', command_list, workspace, otb_dir)
+otb_write_output = execute_command('otbcli_TrainImagesClassifier ', command_list, workspace, otb_dir)
+
+# Save command to log
+with open(log_file, 'w') as f:
+    f.write('Train Images Classifier (SVM)')
+    f.write('Timestamp: {}'.format(ts))
+    f.write('Input Images: {}'.format(input_images.split(';')))
+    f.write('Train/Validation Sample Ratio: {}'.format(input_train_validation_ratio))
+    f.write('Bound sample number minimum: {}'.format(input_bound_sample_num_min))
+    f.write('Default Elevation: {}'.format(input_default_elev))
+    f.write('SVM Kernel Type: {}'.format(input_kernel_type))
+    f.write('SVM Model Type: {}'.format(input_svm_model_type))
+    f.write('Cost Parameter C: {}'.format(input_cost_param_c))
+    f.write('Cost Parameter Nu: {}'.format(input_cost_param_nu))
+    f.write('Parameters Optimization: {}'.format(input_parameter_optimization))
+    f.write('Probability Estimation: {}'.format(input_probability_estimation))
+    f.write('User Seed: {}'.format(input_user_seed))
+    f.write('Output Confusion Matrix: {}'.format(out_conf_matrix))
+    f.write('Output Model: {}'.format(out_model))
+    f.write('OTB Command: {}'.format(otb_write_output))

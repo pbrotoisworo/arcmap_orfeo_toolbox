@@ -142,4 +142,23 @@ otb_out_model = generate_command('-io.out ', True, out_model, False)
 command_list.append(otb_out_model)
 
 # Generate full command for OTB
-execute_command('otbcli_TrainImagesClassifier ', command_list, workspace, otb_dir)
+otb_write_output = execute_command('otbcli_TrainImagesClassifier ', command_list, workspace, otb_dir)
+
+# Save command to log
+with open(log_file, 'w') as f:
+    f.write('Train Image Classifier (Bayes) Log')
+    f.write('Timestamp: {}'.format(ts))
+    f.write('Input Images: {}'.format(input_images.split(';')))
+    f.write('Train/Validation Sample Ratio: {}'.format(input_train_validation_ratio))
+    f.write('Bound sample number minimum: {}'.format(input_bound_sample_num_min))
+    f.write('Default Elevation: {}'.format(input_default_elev))
+    f.write('Maximum Depth of the Tree: {}'.format(input_maximum_depth_tree))
+    f.write('Minimum Number of Samples in Each Node: {}'.format(input_minimum_number_each_node))
+    f.write('Termination Criteria for Regression Tree: {}'.format(input_termination_criteria))
+    f.write('Cluster Possible Values of a Categorical Variable into K <= Cat Clusters to Find a Suboptimal Split: {}'.format(input_cluster_categorical_value))
+    f.write('Size of the Randomly Selected Subset of Features at Each Tree Node: {}'.format(input_size_randomly_selected_features_node))
+    f.write('Maximum Number of Trees in the Forest: {}'.format(input_maximum_number_trees))
+    f.write('Sufficient Accuracy (OOB error): {}'.format(input_oob_error))
+    f.write('User Seed: {}'.format(input_user_seed))
+    f.write('Output Confusion Matrix or Contingency Table: {}'.format(out_conf_matrix))
+    f.write('Output Model: {}'.format(out_model))

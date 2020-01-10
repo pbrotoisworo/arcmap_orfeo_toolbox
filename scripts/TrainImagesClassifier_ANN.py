@@ -203,4 +203,32 @@ if not len(str(out_model)) == 0:
     command_list.append(otb_out_model)
 
 # Generate full command for OTB
-execute_command('otbcli_TrainImagesClassifier ', command_list, workspace, otb_dir)
+otb_write_output = execute_command('otbcli_TrainImagesClassifier ', command_list, workspace, otb_dir)
+
+# Save command to log
+with open(log_file, 'w') as f:
+    f.write('Timestamp: {}'.format(ts))
+    f.write('Image Files: {}'.format(input_images.split(';')))
+    f.write('Training Shapefiles: {}'.format(input_train_shp.split(';')))
+    f.write('Maximum Training Sample Size: {}'.format(input_max_class_train_sample))
+    f.write('Maximum Validation Sample Size: {}'.format(input_max_class_valid_sample))
+    f.write('Train Method: {}'.format(input_train_method))
+    f.write('Train/Validation Ratio: {}'.format(input_train_validation_ratio))
+    f.write('Number of Neurons: {}'.format(input_number_neurons))
+    f.write('Neuron Activation Type: {}'.format(input_neuron_activation_type))
+    f.write('Alpha Parameter Activation: {}'.format(input_alpha_param_activation))
+    f.write('Beta Parameter Activation: {}'.format(input_beta_param_activation))
+    f.write('Strength of Weight Gradient Term in BACKDROP Method:'.format(input_strength_weight_gradient_backdrop))
+    f.write('Strength of the Momentum Term: {}'.format(input_strength_momentum_term))
+    f.write('Initial value of Delta_0 of update-values Delta {ij} in Resilient Back-propagation method: {}'.format(input_initial_value_delta_bprop))
+    f.write('Update-values of Lower Limit Delta_{min} in Resilient Back-propagation: {}'.format(input_update_values_lower_lim_bprop))
+    f.write('Termination Criteria: {}'.format(input_termination_criteria))
+    f.write('Epsilon Value Used in the Termination Criteria: {}'.format(input_epsilon_termination))
+    f.write('Maximum number of iterations used in the Termination criteria: {}'.format(input_iter_termination))
+    if len(str(out_conf_matrix)) > 0:
+        f.write('Output Confusion Matrix: {}'.format(out_conf_matrix))
+    else:
+        f.write('Output Confusion Matrix: None')
+    f.write('User Seed: {}'.format(input_user_seed))
+    f.write('Output model file: {}'.format(out_model))
+    f.write('OTB Command: {}'.format(otb_write_output))

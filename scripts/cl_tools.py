@@ -44,6 +44,8 @@ def execute_command(command, arguments, workspace, otb_dir):
     # os.remove(out_batch_file)
     # os.remove(command_file)
 
+    return otb_write_output
+
 
 def generate_command(otb_command=None, quotes=None, input_variable=None, multi_list=False):
     """Generate OTB command.

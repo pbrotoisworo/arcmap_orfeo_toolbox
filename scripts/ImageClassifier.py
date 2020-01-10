@@ -55,8 +55,9 @@ command_list.append(otb_input_model)
 otb_input_ram = generate_command('-ram ', False, input_ram)
 command_list.append(otb_input_ram)
 
-otb_input_statistics = generate_command('-imstat ', True, input_statistics)
-command_list.append(otb_input_statistics)
+if len(input_statistics) > 0:
+    otb_input_statistics = generate_command('-imstat ', True, input_statistics)
+    command_list.append(otb_input_statistics)
 
 otb_input_no_data_label = generate_command('-nodatalabel ', False, input_no_data_label)
 command_list.append(otb_input_no_data_label)
@@ -68,4 +69,18 @@ otb_input_output_conf = generate_command('-confmap ', True, input_output_conf)
 command_list.append(otb_input_output_conf)
 
 # Generate full command for OTB
-execute_command('otbcli_ImageClassifier ', command_list, workspace, otb_dir)
+otb_write_output = execute_command('otbcli_ImageClassifier ', command_list, workspace, otb_dir)
+
+# Save command to log
+with open(log_file, 'w') as f:
+    f.write('Image Classification Log')
+    f.write('Timestamp: {}'.format(ts))
+    f.write('Input Images: {}'.format(input_image))
+    f.write('Input Model: {}'.format(input_model))
+    if len(input_statistics) > 0:
+        f.write('Input Statistics File: {}'.format(input_statistics))
+    else:
+        f.write('Input Statistics File: None')
+    f.write('Input RAM Limit: {}'.format(input_ram))
+    f.write('Generate confidence map: {}'.format(input_output_conf))
+    f.write('OTB Command: {}'.format(otb_write_output))

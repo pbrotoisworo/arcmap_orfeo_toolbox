@@ -43,7 +43,6 @@ command_list = []
 
 for idx, input_image in enumerate(input_images.split(';')):
 
-    arcpy.AddMessage('Processing: {}'.format(input_image))
     input_image = input_image.rstrip("'")
     input_image = input_image.lstrip("'")
 
@@ -72,9 +71,17 @@ for idx, input_image in enumerate(input_images.split(';')):
 
 # Generate full command for OTB
 del command_list[-1]
-execute_command('otbcli_ImageClassifier ', command_list, workspace, otb_dir)
+otb_write_output = execute_command('otbcli_ImageClassifier ', command_list, workspace, otb_dir)
 
 # Save command to log
-# with open(log_file, 'w') as f:
-#     arcpy.AddMessage('Generating Log File...')
-#     f.write('')
+with open(log_file, 'w') as f:
+    f.write('Batch Image Classification Log')
+    f.write('Timestamp: {}'.format(ts))
+    f.write('Total Items: {}'.format(len(input_images.split(';'))))
+    f.write('Input Images: {}'.format(input_images))
+    f.write('Input Model: {}'.format(input_model))
+    f.write('Input RAM Limit: {}'.format(input_ram))
+    f.write('Output filename: {}'.format(input_output_batch_prefix))
+    f.write('Output folder: {}'.format(input_output_folder))
+    f.write('Generate confidence map: {}'.format(otb_input_output_conf))
+    f.write('OTB Command: {}'.format(otb_write_output))

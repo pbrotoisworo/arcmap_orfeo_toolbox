@@ -20,7 +20,7 @@ ts = ts.strftime("%Y-%m-%d %H:%M:%S")
 ts_file_append = ts.replace('-', '')
 ts_file_append = ts_file_append.replace(':', '')
 ts_file_append = ts_file_append.replace(' ', '_')
-log_file = os.path.join(log_folder, 'TRAINCLASSKMEANS' + ts_file_append + '.log')
+log_file = os.path.join(log_folder, 'CLASSIFYKMEANS' + ts_file_append + '.log')
 
 # Load OTB Dir
 with open(os.path.join(workspace, 'OTBDIR.ini'), 'r') as f:
@@ -87,9 +87,23 @@ command_list.append(otb_input_mask_value)
 otb_input_seed = generate_command('-rand ', False, input_seed, False)
 command_list.append(otb_input_seed)
 
-otb_output_file = generate_command('-out ', False, output_file, False)
+otb_output_file = generate_command('-out ', True, output_file, False)
 command_list.append(otb_output_file)
 
 # Generate full command for OTB
-execute_command('otbcli_TrainImagesClassifier ', command_list, workspace, otb_dir)
+otb_write_output = execute_command('otbcli_KMeansClassification ', command_list, workspace, otb_dir)
 
+# Save command to log
+with open(log_file, 'w') as f:
+    f.write('K Means Classification Log')
+    f.write('Timestamp: {}'.format(ts))
+    f.write('Image Input: {}'.format(input_image))
+    f.write('Validity Mask: {}'.format(input_validity_mask))
+    f.write('Training Set Size: {}'.format(input_training_set_size))
+    f.write('Number of classes: {}'.format(input_number_of_classes))
+    f.write('Max Number of Iterations: {}'.format(input_max_num_iterations))
+    f.write('Mask Value: {}'.format(input_mask_value))
+    f.write('Sampler Type: {}'.format(input_sampler_type))
+    f.write('Output centroid file: {}'.format(output_centroid_file))
+    f.write('Output image: {}'.format(output_file))
+    f.write('OTB Command: {}'.format(otb_write_output))

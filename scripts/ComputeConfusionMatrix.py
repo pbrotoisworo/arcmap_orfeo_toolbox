@@ -61,4 +61,12 @@ otb_output_matrix_output = generate_command('-out ', False, output_matrix_output
 command_list.append(otb_output_matrix_output)
 
 # Generate full command for OTB
-execute_command('otbcli_ComputeConfusionMatrix ', command_list, workspace, otb_dir)
+otb_write_output = execute_command('otbcli_ComputeConfusionMatrix ', command_list, workspace, otb_dir)
+
+# Save command to log
+with open(log_file, 'w') as f:
+    f.write('Compute Confusion Matrix Log')
+    f.write('Timestamp: {}'.format(ts))
+    f.write('Input image: {}'.format(input_image))
+    f.write('OTB Command: {}'.format(otb_write_output))
+

@@ -143,4 +143,24 @@ otb_out_model = generate_command('-io.out ', True, out_model, False)
 command_list.append(otb_out_model)
 
 # Generate full command for OTB
-execute_command('otbcli_TrainImagesClassifier ', command_list, workspace, otb_dir)
+otb_write_output = execute_command('otbcli_TrainImagesClassifier ', command_list, workspace, otb_dir)
+
+# Save command to log
+with open(log_file, 'w') as f:
+    f.write('Train Image Classifier (Bayes) Log')
+    f.write('Timestamp: {}'.format(ts))
+    f.write('Input Images: {}'.format(input_images.split(';')))
+    f.write('Train/Validation Sample Ratio: {}'.format(input_train_validation_ratio))
+    f.write('Bound sample number minimum: {}'.format(input_bound_sample_num_min))
+    f.write('Default Elevation: {}'.format(input_default_elev))
+    f.write('Maximum Depth of the Tree: {}'.format(input_max_depth_tree))
+    f.write('Minimum Number of Samples in Each Node: {}'.format(input_min_samples_node))
+    f.write('Termination Criteria for Each Regression Tree: {}'.format(input_termination_criteria))
+    f.write('Cluster Possible Values of a Categorical Variable into K: {}'.format(input_cluster_possible_values_k))
+    f.write('K-fold Cross Validations: {}'.format(input_k_fold_validations))
+    f.write('Set Use1seRule flag to false: {}'.format(input_set_use1serule))
+    f.write('Set TruncatePrunedTree flag to false: {}'.format(input_set_truncate_pruned_tree_to_false))
+    f.write('User Seed: {}'.format(input_user_seed))
+    f.write('Output Confusion Matrix: {}'.format(out_conf_matrix))
+    f.write('Output Model: {}'.format(out_model))
+    f.write('OTB Command: {}'.format(otb_write_output))

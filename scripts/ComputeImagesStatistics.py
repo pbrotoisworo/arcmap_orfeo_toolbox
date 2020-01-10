@@ -18,7 +18,7 @@ ts = ts.strftime("%Y-%m-%d %H:%M:%S")
 ts_file_append = ts.replace('-', '')
 ts_file_append = ts_file_append.replace(':', '')
 ts_file_append = ts_file_append.replace(' ', '_')
-log_file = os.path.join(log_folder, 'COMPUTESTATISTICS' + ts_file_append + '.log')
+log_file = os.path.join(log_folder, 'COMPUTEIMAGESTATISTICS' + ts_file_append + '.log')
 
 # Load OTB Dir
 with open(os.path.join(workspace, 'OTBDIR.ini'), 'r') as f:
@@ -54,4 +54,12 @@ otb_output_xml = generate_command('-out ', True, output_xml, False)
 command_list.append(otb_output_xml)
 
 # Generate full command for OTB
-execute_command('otbcli_ComputeImagesStatistics ', command_list, workspace, otb_dir)
+otb_write_output = execute_command('otbcli_ComputeImagesStatistics ', command_list, workspace, otb_dir)
+
+# Save command to log
+with open(log_file, 'w') as f:
+    f.write('Compute Image Statistics Log')
+    f.write('Timestamp: {}'.format(ts))
+    f.write('Background Value: {}'.format(input_background_value))
+    f.write('Output XML: {}'.format(output_xml))
+    f.write('OTB Command: {}'.format(otb_write_output))

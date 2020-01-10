@@ -14,3 +14,9 @@ in_otb = arcpy.GetParameterAsText(0)
 
 with open('OTBDIR.ini', 'w') as f:
     f.write(in_otb)
+
+arcpy.AddMessage('Updated OTB path: {}\n'.format(in_otb))
+
+# Make log folder
+if not os.path.exists(log_folder):
+    os.mkdir(log_folder)
