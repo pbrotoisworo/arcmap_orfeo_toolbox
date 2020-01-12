@@ -40,15 +40,15 @@ output_change_map = arcpy.GetParameterAsText(3)
 command_list = []
 
 # Generate command for input image (before)
-otb_input_before_image = generate_command('-in ', True, input_before_image, False)
+otb_input_before_image = generate_command('-in1 ', True, input_before_image, False)
 command_list.append(otb_input_before_image)
 
 # Generate command for input image (after)
-otb_input_after_image = generate_command('-in1 ', True, input_after_image, False)
+otb_input_after_image = generate_command('-in2 ', True, input_after_image, False)
 command_list.append(otb_input_after_image)
 
 # Generate command for ram usage
-otb_input_ram = generate_command('-in2 ', False, input_ram, False)
+otb_input_ram = generate_command('-ram ', False, input_ram, False)
 command_list.append(otb_input_ram)
 
 # Generate command for output change map
