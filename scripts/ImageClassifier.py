@@ -74,13 +74,10 @@ otb_write_output = execute_command('otbcli_ImageClassifier ', command_list, work
 # Save command to log
 with open(log_file, 'w') as f:
     f.write('Image Classification Log')
-    f.write('Timestamp: {}'.format(ts))
-    f.write('Input Images: {}'.format(input_image))
-    f.write('Input Model: {}'.format(input_model))
-    if len(input_statistics) > 0:
-        f.write('Input Statistics File: {}'.format(input_statistics))
-    else:
-        f.write('Input Statistics File: None')
-    f.write('Input RAM Limit: {}'.format(input_ram))
-    f.write('Generate confidence map: {}'.format(input_output_conf))
-    f.write('OTB Command: {}'.format(otb_write_output))
+    f.write('\nTimestamp: {}'.format(ts))
+    f.write('\nInput Images: {}'.format(input_image))
+    f.write('\nInput Model: {}'.format(input_model))
+    f.write('\nInput Statistics File: {}'.format(input_statistics))
+    f.write('\nInput RAM Limit: {}'.format(input_ram))
+    f.write('\nGenerate confidence map: {}'.format(input_output_conf))
+    f.write('\nOTB Command: {}'.format(otb_write_output))

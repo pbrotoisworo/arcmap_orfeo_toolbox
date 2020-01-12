@@ -59,7 +59,7 @@ otb_write_output = execute_command('otbcli_ComputeImagesStatistics ', command_li
 # Save command to log
 with open(log_file, 'w') as f:
     f.write('Compute Image Statistics Log')
-    f.write('Timestamp: {}'.format(ts))
-    f.write('Background Value: {}'.format(input_background_value))
-    f.write('Output XML: {}'.format(output_xml))
-    f.write('OTB Command: {}'.format(otb_write_output))
+    f.write('\nTimestamp: {}'.format(ts))
+    f.write('\nBackground Value: {}'.format(input_background_value))
+    f.write('\nOutput XML: {}'.format(output_xml))
+    f.write('\nOTB Command: {}'.format(otb_write_output))

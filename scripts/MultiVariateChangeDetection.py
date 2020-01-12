@@ -20,7 +20,7 @@ ts = ts.strftime("%Y-%m-%d %H:%M:%S")
 ts_file_append = ts.replace('-', '')
 ts_file_append = ts_file_append.replace(':', '')
 ts_file_append = ts_file_append.replace(' ', '_')
-log_file = os.path.join(log_folder, 'CLASSIFYKMEANS' + ts_file_append + '.log')
+log_file = os.path.join(log_folder, 'MULTIVARIATECD' + ts_file_append + '.log')
 
 # Load OTB Dir
 with open(os.path.join(workspace, 'OTBDIR.ini'), 'r') as f:
@@ -61,9 +61,9 @@ otb_write_output = execute_command('otbcli_MultivariateAlterationDetector ', com
 # Save command to log
 with open(log_file, 'w') as f:
     f.write('Multivariate Alteration Detector Log')
-    f.write('Timestamp: {}'.format(ts))
-    f.write('Input Before Image: {}'.format(input_before_image))
-    f.write('Input After Image: {}'.format(input_after_image))
-    f.write('Input RAM Limit: {}'.format(input_ram))
-    f.write('Output Change Map: {}'.format(output_change_map))
-    f.write('OTB Command : {}'.format(otb_write_output))
+    f.write('\nTimestamp: {}'.format(ts))
+    f.write('\nInput Before Image: {}'.format(input_before_image))
+    f.write('\nInput After Image: {}'.format(input_after_image))
+    f.write('\nInput RAM Limit: {}'.format(input_ram))
+    f.write('\nOutput Change Map: {}'.format(output_change_map))
+    f.write('\nOTB Command : {}'.format(otb_write_output))
